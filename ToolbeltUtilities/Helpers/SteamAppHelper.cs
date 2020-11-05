@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -20,10 +21,32 @@ namespace ToolbeltUtilities.Helpers
         {
             _logger = logger;
             _steamApplist = new Applist();
+            _uriBuilder = new UriBuilder();
         }
         public Applist GetUserOwnedGames(string steamID)
         {
             _logger.LogInformation($"Getting owned games for user ID {steamID}");
+            //TODO: Add logic for determining whether a custom or SteamID was provided
+
+            using (var client = new WebClient())
+            {
+                client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)"); //TODO: move to config(?)
+                client.Encoding = Encoding.UTF8;
+
+                _uriBuilder = new UriBuilder("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/");
+                TryAddQueryString("key", _steamAPIKey);
+
+                string str = client.DownloadString(_uriBuilder.Uri); //TODO: move to config
+
+                if (!string.IsNullOrWhiteSpace(str))
+                {
+                    var userData = JsonConvert.DeserializeObject<SteamUserData>(str);
+                    var appList = MapSteamUserDataAppIDsToApplistIDs(userData);
+
+                    return appList;
+                }
+            }
 
             return new Applist();
         }
@@ -81,6 +104,23 @@ namespace ToolbeltUtilities.Helpers
         {
 
             return true;
+        }
+
+        private void TryAddQueryString(string key, string value)
+        {
+            var queryString = HttpUtility.ParseQueryString(_uriBuilder.Query);
+            queryString[key] = value;
+            _uriBuilder.Query = queryString.ToString();
+        }
+
+        private Applist MapSteamUserDataAppIDsToApplistIDs(SteamUserData userData)
+        {
+            var appList = new Applist();
+            foreach (var game in userData.Response.Games)
+            {
+                appList.Apps.Add(new SteamApp { Appid = game.Appid});
+            }
+            return new Applist();        
         }
     }
 }
