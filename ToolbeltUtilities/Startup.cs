@@ -25,6 +25,7 @@ namespace ToolbeltUtilities
 
             services.AddControllersWithViews();
             services.AddTransient<IWeatherHelper, WeatherHelper>();
+            services.AddTransient<ISteamAppHelper, SteamAppHelper>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

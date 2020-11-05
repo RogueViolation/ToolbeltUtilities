@@ -1,16 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Web;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ToolbeltUtilities.DataStructures;
+using ToolbeltUtilities.IHelpers;
+using System.Collections.Generic;
 
 namespace ToolbeltUtilities.Helpers
 {
-    public class SteamAppHelper
+    public class SteamAppHelper : ISteamAppHelper
     {
         private readonly ILogger<SteamAppHelper> _logger;
         private readonly Applist _steamApplist;
@@ -36,6 +37,8 @@ namespace ToolbeltUtilities.Helpers
 
                 _uriBuilder = new UriBuilder("http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/");
                 TryAddQueryString("key", _steamAPIKey);
+                TryAddQueryString("steamid", "76561198087268097");
+                TryAddQueryString("format", "json");
 
                 string str = client.DownloadString(_uriBuilder.Uri); //TODO: move to config
 
@@ -115,12 +118,12 @@ namespace ToolbeltUtilities.Helpers
 
         private Applist MapSteamUserDataAppIDsToApplistIDs(SteamUserData userData)
         {
-            var appList = new Applist();
+            var appList = new Applist { Apps = new List<SteamApp>()};
             foreach (var game in userData.Response.Games)
             {
                 appList.Apps.Add(new SteamApp { Appid = game.Appid});
             }
-            return new Applist();        
+            return appList;        
         }
     }
 }
