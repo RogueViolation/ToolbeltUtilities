@@ -10,7 +10,7 @@ using ToolbeltUtilities.DataStructures;
 
 namespace ToolbeltUtilities.Helpers
 {
-    public class SteamAppHelper
+    public class SteamAppHelper : ISteamAppHelper
     {
         private readonly ILogger<SteamAppHelper> _logger;
         private readonly Applist _steamApplist;
