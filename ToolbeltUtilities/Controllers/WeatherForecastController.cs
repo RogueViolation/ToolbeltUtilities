@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ToolbeltUtilities.IHelpers;
 
+
 namespace ToolbeltUtilities.Controllers
 {
     [ApiController]
@@ -12,12 +13,14 @@ namespace ToolbeltUtilities.Controllers
     {
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IWeatherHelper _weatherHelper;
+        private readonly ISteamAppHelper _steamAppHelper;
         private readonly double _maxTemp = 39;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherHelper weatherHelper)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherHelper weatherHelper, ISteamAppHelper steamAppHelper)
         {
             _logger = logger;
             _weatherHelper = weatherHelper;
+            _steamAppHelper = steamAppHelper;
         }
 
         [HttpGet]
@@ -36,15 +39,16 @@ namespace ToolbeltUtilities.Controllers
 
         private IEnumerable<WeatherForecast> SetupForecasts()
         {
+            var asd = _steamAppHelper.GetUserOwnedGames("76561198087268097");
             var rng = new Random();
-            for (int i=1; i<=5; i++)
+            foreach (var item in asd.Apps)
             {
                 var temp = rng.NextDouble() * _maxTemp;
-                yield return new WeatherForecast 
+                yield return new WeatherForecast
                 {
-                        Date = DateTime.Now.AddDays(i).ToString("yyyy/MM/dd"),
-                        TemperatureC = Math.Round(temp,1),
-                        Summary = _weatherHelper.SetupWeatherSummary(temp).ToString()
+                    Date = DateTime.Now.ToString(),
+                    TemperatureC = Math.Round(temp, 1),
+                    Summary = item.Appid
                 };
             }
 

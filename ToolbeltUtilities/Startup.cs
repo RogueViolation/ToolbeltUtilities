@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ToolbeltUtilities.IHelpers;
 using ToolbeltUtilities.Helpers;
+using ToolbeltUtilities.DataAccess;
+using ToolbeltUtilities.IDataAccess;
 
 namespace ToolbeltUtilities
 {
@@ -26,6 +28,7 @@ namespace ToolbeltUtilities
             services.AddControllersWithViews();
             services.AddTransient<IWeatherHelper, WeatherHelper>();
             services.AddTransient<ISteamAppHelper, SteamAppHelper>();
+            services.AddTransient<IAPIDataAccess, APIDataAccess>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
