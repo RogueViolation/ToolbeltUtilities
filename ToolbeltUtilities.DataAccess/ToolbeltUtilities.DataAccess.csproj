@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ToolbeltUtilities.IDataAccess\ToolbeltUtilities.IDataAccess\ToolbeltUtilities.IDataAccess.csproj" />
+    <ProjectReference Include="..\ToolbeltUtilities.IDataAccess\ToolbeltUtilities.IDataAccess.csproj" />
   </ItemGroup>
 
 </Project>

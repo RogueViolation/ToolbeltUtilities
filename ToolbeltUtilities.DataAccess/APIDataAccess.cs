@@ -5,10 +5,10 @@ namespace ToolbeltUtilities.DataAccess
 {
     public class APIDataAccess : IAPIDataAccess
     {
-        public TResult Get<TResult>(object parameter, Uri uri)
+        public void Get<TResult>(object parameter, Uri uri)
         {
 
-            return 0;
+            return;
         }
     }
 }

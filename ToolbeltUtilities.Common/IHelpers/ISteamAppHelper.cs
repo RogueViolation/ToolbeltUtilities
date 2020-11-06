@@ -8,6 +8,6 @@ namespace ToolbeltUtilities.IHelpers
 {
     public interface ISteamAppHelper
     {
-        public Applist GetUserOwnedGames(string steamID);
+        Applist GetUserOwnedGames(string steamID);
     }
 }

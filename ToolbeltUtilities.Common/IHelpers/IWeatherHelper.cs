@@ -8,6 +8,6 @@ namespace ToolbeltUtilities.IHelpers
 {
     public interface IWeatherHelper
     {
-        public WeatherSummariesEnum SetupWeatherSummary(double temperature);
+        WeatherSummariesEnum SetupWeatherSummary(double temperature);
     }
 }

@@ -16,7 +16,8 @@ namespace ToolbeltUtilities.Helpers
         private readonly ILogger<SteamAppHelper> _logger;
         private readonly Applist _steamApplist;
         private readonly string _appListPath = "../AppList.txt";
-        private readonly string _steamAPIKey = "REDACTED";
+        private readonly string _steamAPIKey = "00A3FEFE22592B58BF7665D38F3FBEF1";
+        private UriBuilder _uriBuilder;
 
         public SteamAppHelper(ILogger<SteamAppHelper> logger)
         {
