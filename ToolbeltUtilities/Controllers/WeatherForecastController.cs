@@ -46,9 +46,9 @@ namespace ToolbeltUtilities.Controllers
                 var temp = rng.NextDouble() * _maxTemp;
                 yield return new WeatherForecast
                 {
-                    Date = DateTime.Now.ToString(),
+                    AppName = item.Name,
                     TemperatureC = Math.Round(temp, 1),
-                    Summary = item.Appid
+                    AppID = item.Appid.ToString()
                 };
             }
 

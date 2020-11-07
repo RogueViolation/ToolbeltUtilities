@@ -9,6 +9,7 @@ using ToolbeltUtilities.DataStructures;
 using ToolbeltUtilities.IHelpers;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Linq;
 using ToolbeltUtilities.IDataAccess;
 
 namespace ToolbeltUtilities.Helpers
@@ -17,7 +18,7 @@ namespace ToolbeltUtilities.Helpers
     {
         private readonly ILogger<SteamAppHelper> _logger;
         private readonly IAPIDataAccess _apiDataAccess;
-        private readonly Applist _steamApplist;
+        private Applist _steamApplist;
         private readonly string _appListPath = "../AppList.txt";
         private readonly string _steamAPIKey = "00A3FEFE22592B58BF7665D38F3FBEF1";
         private UriBuilder _uriBuilder;
@@ -28,6 +29,7 @@ namespace ToolbeltUtilities.Helpers
             _apiDataAccess = apiDataAccess;
             _steamApplist = new Applist();
             _uriBuilder = new UriBuilder();
+            SetupAppList();
         }
         public Applist GetUserOwnedGames(string steamID)
         {
@@ -42,31 +44,39 @@ namespace ToolbeltUtilities.Helpers
             return MapSteamUserDataAppIDsToApplistIDs(_apiDataAccess.Get<SteamUserData>(_uriBuilder.Uri.ToString()));
         }
 
-        private Applist GetAppList()
-        {
-            if (!File.Exists(_appListPath)) //TODO: move to config
-            {
-                if (!DownloadAppList())
-                    return _steamApplist;
-            }
-
-            var lastChanged = DateTime.Now; //TODO: setup last changed
-            int daysSinceChanged = (int)(DateTime.Now - lastChanged).TotalDays;
-            if (daysSinceChanged > 10)
-            {
-                _logger.LogInformation("More than 10 days since last app list updated. Downloading new list.");
-                if (!DownloadAppList())
-                    return _steamApplist;
-            }
-
-            string json = File.ReadAllText(_appListPath);
-            return JsonConvert.DeserializeObject<Applist>(json);
-        }
-
-        private bool DownloadAppList()
+        private void SetupAppList()
         {
             try
             {
+                var lastChanged = DateTime.Now; //TODO: setup last changed
+                int daysSinceChanged = (int)(DateTime.Now - lastChanged).TotalDays;
+
+                if (!File.Exists(_appListPath) || daysSinceChanged > 10) //TODO: move to config
+                {
+                    _logger.LogInformation("More than 10 days since last app list updated or list doesn't exist. Downloading new list.");
+                    DownloadAppList();
+                }
+
+                string json = File.ReadAllText(_appListPath);
+                _steamApplist = JsonConvert.DeserializeObject<SteamAppResult>(json).Applist;
+                return;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error downloading app list. Steam might be down. {ex.Message}");
+                _steamApplist = new Applist();
+            }
+
+        }
+
+        private void DownloadAppList()
+        {
+            try
+            {
+                _logger.LogInformation($"Getting Steam games list");
+
+
+
                 using (var client = new WebClient())
                 {
                     client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
@@ -74,12 +84,10 @@ namespace ToolbeltUtilities.Helpers
                     client.Encoding = Encoding.UTF8;
 
                     string str = client.DownloadString(new Uri("https://api.steampowered.com/ISteamApps/GetAppList/v2")); //TODO: move to config
-
+                    _apiDataAccess.Get<SteamUserData>(_uriBuilder.Uri.ToString());
                     if (!string.IsNullOrWhiteSpace(str))
                     {
                         File.WriteAllText(_appListPath, str); //TODO: move to config
-
-                        return true;
                     }
                 }
             }
@@ -87,8 +95,6 @@ namespace ToolbeltUtilities.Helpers
             {
                 _logger.LogError($"Error downloading app list. Steam might be down. {ex.Message}");
             }
-
-            return false;
         }
 
         private bool CheckGameOwnership()
@@ -106,12 +112,20 @@ namespace ToolbeltUtilities.Helpers
 
         private Applist MapSteamUserDataAppIDsToApplistIDs(SteamUserData userData)
         {
-            var appList = new Applist { Apps = new List<SteamApp>()};
+            SetupAppList();
+            var appList = new Applist { Apps = new List<SteamApp>() };
+            SteamApp app;
             foreach (var game in userData.Response.Games)
             {
-                appList.Apps.Add(new SteamApp { Appid = game.Appid});
+                app = _steamApplist.Apps.FirstOrDefault(item => item.Appid == game.Appid) ?? new SteamApp { Appid = 0, Name = "Not Found"};
+
+                appList.Apps.Add(new SteamApp
+                {
+                    Appid = game.Appid,
+                    Name = app.Name
+                });
             }
-            return appList;        
+            return appList;
         }
     }
 }

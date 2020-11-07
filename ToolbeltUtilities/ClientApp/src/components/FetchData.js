@@ -17,17 +17,15 @@ export class FetchData extends Component {
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Summary</th>
+            <th>App Name</th>
+            <th>App ID</th>
           </tr>
         </thead>
         <tbody>
           {forecasts.map(forecast =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.summary}</td>
+            <tr key={forecast.appID}>
+              <td>{forecast.appName}</td>
+              <td>{forecast.appID}</td>
             </tr>
           )}
         </tbody>
