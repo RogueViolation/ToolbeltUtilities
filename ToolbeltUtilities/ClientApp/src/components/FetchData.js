@@ -23,9 +23,9 @@ export class FetchData extends Component {
         </thead>
         <tbody>
           {forecasts.map(forecast =>
-            <tr key={forecast.appID}>
-              <td>{forecast.appName}</td>
-              <td>{forecast.appID}</td>
+            <tr key={forecast.appid}>
+              <td>{forecast.name}</td>
+              <td>{forecast.appid}</td>
             </tr>
           )}
         </tbody>
@@ -48,7 +48,7 @@ export class FetchData extends Component {
   }
 
   async populateWeatherData() {
-    const response = await fetch('weatherforecast');
+    const response = await fetch('steamapp');
     const data = await response.json();
     this.setState({ forecasts: data, loading: false });
   }

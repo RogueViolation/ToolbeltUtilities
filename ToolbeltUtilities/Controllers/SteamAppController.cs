@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ToolbeltUtilities.DataStructures;
 using ToolbeltUtilities.IHelpers;
 
 
@@ -9,14 +10,14 @@ namespace ToolbeltUtilities.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class SteamAppController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<SteamAppController> _logger;
         private readonly IWeatherHelper _weatherHelper;
         private readonly ISteamAppHelper _steamAppHelper;
         private readonly double _maxTemp = 39;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherHelper weatherHelper, ISteamAppHelper steamAppHelper)
+        public SteamAppController(ILogger<SteamAppController> logger, IWeatherHelper weatherHelper, ISteamAppHelper steamAppHelper)
         {
             _logger = logger;
             _weatherHelper = weatherHelper;
@@ -24,11 +25,11 @@ namespace ToolbeltUtilities.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<SteamApp> Get()
         {
             try
             {
-                return SetupForecasts();
+                return SetupSteamApps();
             }
             catch (Exception e)
             {
@@ -37,18 +38,17 @@ namespace ToolbeltUtilities.Controllers
             }
         }
 
-        private IEnumerable<WeatherForecast> SetupForecasts()
+        private IEnumerable<SteamApp> SetupSteamApps()
         {
             var asd = _steamAppHelper.GetUserOwnedGames("76561198087268097");
             var rng = new Random();
             foreach (var item in asd.Apps)
             {
                 var temp = rng.NextDouble() * _maxTemp;
-                yield return new WeatherForecast
+                yield return new SteamApp
                 {
-                    AppName = item.Name,
-                    TemperatureC = Math.Round(temp, 1),
-                    AppID = item.Appid.ToString()
+                    Name = item.Name,
+                    Appid = item.Appid
                 };
             }
 
