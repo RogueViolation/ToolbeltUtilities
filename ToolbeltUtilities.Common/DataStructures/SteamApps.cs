@@ -4,10 +4,15 @@ using System.Collections.Generic;
 
 namespace ToolbeltUtilities.DataStructures
 {
+    public class SteamAppResult
+    {
+        [JsonProperty("applist")]
+        public Applist Applist { get; set; }
+    }
     public class SteamApp : IComparable<SteamApp>
     {
         [JsonProperty("appid")]
-        public string Appid { get; set; }
+        public int Appid { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }

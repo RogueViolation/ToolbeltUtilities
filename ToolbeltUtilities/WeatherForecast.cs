@@ -4,10 +4,10 @@ namespace ToolbeltUtilities
 {
     public class WeatherForecast
     {
-        public string Date { get; set; }
+        public string AppName { get; set; }
 
         public double TemperatureC { get; set; }
 
-        public string Summary { get; set; }
+        public string AppID { get; set; }
     }
 }

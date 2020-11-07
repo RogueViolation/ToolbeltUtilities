@@ -23,7 +23,7 @@ public partial class Response
 public partial class Game
 {
     [JsonProperty("appid")]
-    public string Appid { get; set; }
+    public int Appid { get; set; }
 
     [JsonProperty("playtime_forever")]
     public long PlaytimeForever { get; set; }
