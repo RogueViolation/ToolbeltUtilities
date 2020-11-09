@@ -9,18 +9,16 @@ using ToolbeltUtilities.IHelpers;
 namespace ToolbeltUtilities.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SteamAppController : ControllerBase
     {
         private readonly ILogger<SteamAppController> _logger;
-        private readonly IWeatherHelper _weatherHelper;
         private readonly ISteamAppHelper _steamAppHelper;
         private readonly double _maxTemp = 39;
 
-        public SteamAppController(ILogger<SteamAppController> logger, IWeatherHelper weatherHelper, ISteamAppHelper steamAppHelper)
+        public SteamAppController(ILogger<SteamAppController> logger, ISteamAppHelper steamAppHelper)
         {
             _logger = logger;
-            _weatherHelper = weatherHelper;
             _steamAppHelper = steamAppHelper;
         }
 

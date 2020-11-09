@@ -40,7 +40,7 @@ export class FetchData extends Component {
 
     return (
       <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
+        <h1 id="tabelLabel" >Steam Apps Owned</h1>
         <p>This component demonstrates fetching data from the server.</p>
         {contents}
       </div>
@@ -48,7 +48,7 @@ export class FetchData extends Component {
   }
 
   async populateWeatherData() {
-    const response = await fetch('steamapp');
+    const response = await fetch('api/steamapp');
     const data = await response.json();
     this.setState({ forecasts: data, loading: false });
   }
