@@ -14,7 +14,6 @@ namespace ToolbeltUtilities.Controllers
     {
         private readonly ILogger<SteamAppController> _logger;
         private readonly ISteamAppHelper _steamAppHelper;
-        private readonly double _maxTemp = 39;
 
         public SteamAppController(ILogger<SteamAppController> logger, ISteamAppHelper steamAppHelper)
         {
@@ -42,7 +41,6 @@ namespace ToolbeltUtilities.Controllers
             var rng = new Random();
             foreach (var item in asd.Apps)
             {
-                var temp = rng.NextDouble() * _maxTemp;
                 yield return new SteamApp
                 {
                     Name = item.Name,

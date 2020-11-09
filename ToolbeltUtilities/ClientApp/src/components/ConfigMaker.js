@@ -5,26 +5,42 @@ export class ConfigMaker extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { currentCount: 0 };
+        this.state = { item: [] };
         this.incrementCounter = this.incrementCounter.bind(this);
     }
 
-    incrementCounter() {
-        this.setState({
-            currentCount: this.state.currentCount + 1
-        });
+    componentDidMount() {
+        this.populateSteamAppData();
+    }
+
+    async populateSteamAppData() {
+        const response = await fetch('api/steamapp');
+        const data = await response.json();
+        this.setState({ forecasts: data, loading: false });
     }
 
     render() {
         return (
             <div>
-                <h1>ASF Config Maker</h1>
+                <form>
+                    <input
+                        type="text"
+                        name="price"
+                        onChange={this.changeHandler}
+                        placeholder="Price"
+                        value={this.state.item.price}
+                    />
 
-                <p>This is a simple example of a React component.</p>
+                    <input
+                        type="text"
+                        name="description"
+                        onChange={this.changeHandler}
+                        placeholder="Description"
+                        value={this.state.item.description}
+                    />
 
-                <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
-
-                <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button>
+                    <button>Add new item</button>
+                </form>
             </div>
         );
     }
