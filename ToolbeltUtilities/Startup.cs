@@ -26,7 +26,6 @@ namespace ToolbeltUtilities
         {
 
             services.AddControllersWithViews();
-            services.AddTransient<IWeatherHelper, WeatherHelper>();
             services.AddSingleton<ISteamAppHelper, SteamAppHelper>();
             services.AddTransient<IAPIDataAccess, APIDataAccess>();
 
