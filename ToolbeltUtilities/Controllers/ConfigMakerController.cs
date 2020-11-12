@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ToolbeltUtilities.IHelpers;
 
 namespace ToolbeltUtilities.Controllers
 {
@@ -21,7 +16,7 @@ namespace ToolbeltUtilities.Controllers
         }
 
         [HttpPost]
-        public string Post([FromBody] string jsonData)
+        public string PostSteamApp([FromBody] string steamApp)
         {
             try
             {

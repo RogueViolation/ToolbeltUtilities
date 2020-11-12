@@ -38,7 +38,6 @@ namespace ToolbeltUtilities.Controllers
         private IEnumerable<SteamApp> SetupSteamApps()
         {
             var asd = _steamAppHelper.GetUserOwnedGames("76561198087268097");
-            var rng = new Random();
             foreach (var item in asd.Apps)
             {
                 yield return new SteamApp
