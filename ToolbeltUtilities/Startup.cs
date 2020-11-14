@@ -9,6 +9,7 @@ using ToolbeltUtilities.IHelpers;
 using ToolbeltUtilities.Helpers;
 using ToolbeltUtilities.DataAccess;
 using ToolbeltUtilities.IDataAccess;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ToolbeltUtilities
 {
@@ -24,7 +25,7 @@ namespace ToolbeltUtilities
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddSwaggerGen();
             services.AddControllersWithViews();
             services.AddSingleton<ISteamAppHelper, SteamAppHelper>();
             services.AddTransient<IAPIDataAccess, APIDataAccess>();
@@ -53,6 +54,8 @@ namespace ToolbeltUtilities
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseSwagger();
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"));
 
             app.UseRouting();
 
