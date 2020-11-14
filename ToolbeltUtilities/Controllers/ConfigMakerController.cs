@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ToolbeltUtilities.DataStructures;
 
 namespace ToolbeltUtilities.Controllers
 {
@@ -16,11 +17,11 @@ namespace ToolbeltUtilities.Controllers
         }
 
         [HttpPost]
-        public string PostSteamApp([FromBody] string steamApp)
+        public IActionResult PostSteamApp(Applist appList)
         {
             try
             {
-                return string.Empty;
+                return new OkObjectResult(appList);
             }
             catch (Exception e)
             {
