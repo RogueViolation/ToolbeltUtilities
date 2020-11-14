@@ -5,8 +5,7 @@ export class ConfigMaker extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { item: [] };
-        this.incrementCounter = this.incrementCounter.bind(this);
+        this.state = { apps: [], loading: true };
     }
 
     componentDidMount() {
@@ -16,7 +15,7 @@ export class ConfigMaker extends Component {
     async populateSteamAppData() {
         const response = await fetch('api/steamapp');
         const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
+        this.setState({ apps: data, loading: false });
     }
 
     render() {
