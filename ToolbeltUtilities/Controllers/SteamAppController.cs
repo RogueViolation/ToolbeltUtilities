@@ -35,6 +35,20 @@ namespace ToolbeltUtilities.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult PostSteamApp(Applist appList)
+        {
+            try
+            {
+                return new OkObjectResult(appList);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error while executing POST. {e}");
+                return null;
+            }
+        }
+
         private IEnumerable<SteamApp> SetupSteamApps()
         {
             var asd = _steamAppHelper.GetUserOwnedGames("76561198087268097");
