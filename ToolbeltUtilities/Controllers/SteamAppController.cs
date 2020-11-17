@@ -36,11 +36,11 @@ namespace ToolbeltUtilities.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostSteamApp(Applist appList)
+        public IActionResult PostSteamApp(List<long> appIDs)
         {
             try
             {
-                return new OkObjectResult(appList);
+                return new OkObjectResult(appIDs);
             }
             catch (Exception e)
             {
