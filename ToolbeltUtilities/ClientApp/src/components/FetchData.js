@@ -3,9 +3,14 @@ import React, { Component } from 'react';
 export class FetchData extends Component {
     static displayName = FetchData.name;
 
+    static initialState = { apps: [], loading: true };
+
     constructor(props) {
         super(props);
-        this.state = { steamapps: [], loading: true };
+        this.state = { apps: [], loading: true };
+    }
+    reset() {
+        this.setState({ apps: [], loading: true });
     }
 
     componentDidMount() {
@@ -36,7 +41,7 @@ export class FetchData extends Component {
     render() {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : FetchData.renderSteamAppsTable(this.state.steamapps);
+            : FetchData.renderSteamAppsTable(this.state.apps);
 
         return (
             <div>
@@ -50,6 +55,6 @@ export class FetchData extends Component {
     async populateSteamAppData() {
         const response = await fetch('api/steamapp');
         const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
+        this.setState({ apps: data, loading: false });
     }
 }

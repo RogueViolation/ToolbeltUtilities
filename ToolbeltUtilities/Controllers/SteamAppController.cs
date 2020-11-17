@@ -36,7 +36,7 @@ namespace ToolbeltUtilities.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostSteamApp(List<long> appIDs)
+        public IActionResult PostSteamAppIDList(List<long> appIDs)
         {
             try
             {
