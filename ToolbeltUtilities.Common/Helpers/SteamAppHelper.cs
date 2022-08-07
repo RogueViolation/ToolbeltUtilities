@@ -22,11 +22,16 @@ namespace ToolbeltUtilities.Helpers
         private readonly string _appListPath = "../AppList.txt";
         private readonly string _steamAPIKey = "00A3FEFE22592B58BF7665D38F3FBEF1";
         private UriBuilder _uriBuilder;
+        private readonly IConfigurationReader _configurationReader;
 
-        public SteamAppHelper(ILogger<SteamAppHelper> logger, IAPIDataAccess apiDataAccess)
+        public SteamAppHelper(ILogger<SteamAppHelper> logger, IAPIDataAccess apiDataAccess, IConfigurationReader configurationReader)
         {
+            _configurationReader = configurationReader;
             _logger = logger;
             _apiDataAccess = apiDataAccess;
+
+            _appListPath = _configurationReader.GetConfiguration("AppListLocation");
+            _steamAPIKey = _configurationReader.GetConfiguration("SteamAPI:SteamAPIKey");
             _steamApplist = new Applist();
             _uriBuilder = new UriBuilder();
             SetupAppList();
