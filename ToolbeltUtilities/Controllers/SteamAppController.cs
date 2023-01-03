@@ -54,15 +54,19 @@ namespace ToolbeltUtilities.Controllers
 
         private IEnumerable<SteamApp> SetupSteamApps()
         {
-            var asd = _steamAppHelper.GetUserOwnedGames("76561198087268097");
-            foreach (var item in asd.Apps)
+            var collection = _steamAppHelper.GetUserOwnedGames("76561197962256447");
+            if (collection.Apps.Any())
             {
-                yield return new SteamApp
+                foreach (var item in collection.Apps)
                 {
-                    Name = item.Name,
-                    Appid = item.Appid
-                };
+                    yield return new SteamApp
+                    {
+                        Name = item.Name,
+                        Appid = item.Appid
+                    };
+                }
             }
+            else yield break;
 
         }
     }
