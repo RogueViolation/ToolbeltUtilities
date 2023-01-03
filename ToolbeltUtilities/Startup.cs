@@ -10,6 +10,8 @@ using ToolbeltUtilities.Helpers;
 using ToolbeltUtilities.DataAccess;
 using ToolbeltUtilities.IDataAccess;
 using Swashbuckle.AspNetCore.Swagger;
+using ToolbeltUtilities.Common.Helpers;
+using ToolbeltUtilities.Common.IHelpers;
 
 namespace ToolbeltUtilities
 {
@@ -32,6 +34,7 @@ namespace ToolbeltUtilities
             services.AddSingleton<ISteamAppHelper, SteamAppHelper>();
             services.AddTransient<IConfigurationReader, ConfigurationReader>();
             services.AddTransient<IAPIDataAccess, APIDataAccess>();
+            services.AddSingleton<ISteamIDResolver, SteamIDResolver>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

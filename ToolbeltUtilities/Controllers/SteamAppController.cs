@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ToolbeltUtilities.Common.IHelpers;
 using ToolbeltUtilities.DataStructures;
 using ToolbeltUtilities.IHelpers;
 
@@ -14,11 +15,13 @@ namespace ToolbeltUtilities.Controllers
     {
         private readonly ILogger<SteamAppController> _logger;
         private readonly ISteamAppHelper _steamAppHelper;
+        private readonly ISteamIDResolver _idResolver;
 
-        public SteamAppController(ILogger<SteamAppController> logger, ISteamAppHelper steamAppHelper)
+        public SteamAppController(ILogger<SteamAppController> logger, ISteamAppHelper steamAppHelper, ISteamIDResolver idResolver)
         {
             _logger = logger;
             _steamAppHelper = steamAppHelper;
+            _idResolver = idResolver;
         }
 
         [HttpGet]
